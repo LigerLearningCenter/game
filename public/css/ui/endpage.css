@@ -1,0 +1,167 @@
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Background */
+
+
+.stripe {
+    width: 15%;
+    height: 100%;
+    display: inline-block;
+    margin: 0;
+    padding: 0; 
+}
+@keyframes  {
+  from {
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+}
+
+@-webkit-keyframes {
+from {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+}
+
+
+#background {
+    display: flex;
+    height: 100vh;
+
+}
+
+#stripe1 {
+    background-color: #474747;
+    animation-duration: 2s;
+    animation-name: fadeInDown; 
+}
+#stripe2 {
+    background-color: #e9dc68;
+    animation-duration: 1.5s;
+    animation-name: fadeInDown; 
+}
+#stripe3 {
+    background-color: #e55c4c;
+     animation-duration: 1s;
+    animation-name: fadeInDown; 
+}
+#stripe4 {
+    background-color: #a85eb6;
+     animation-duration: 0.5s;
+    animation-name: fadeInDown; 
+}
+#stripe5 {
+    background-color: #634a81;
+    animation-duration: 1s;
+    animation-name: fadeInDown; 
+}
+#stripe6 {
+    background-color: #3196de;
+    animation-duration: 1.5s;
+    animation-name: fadeInDown; 
+}
+#stripe7 {
+    background-color: #50efbb;
+    animation-duration: 2s;
+    animation-name: fadeInDown; 
+}
+
+
+/* Menu */
+#menu { 
+    position: absolute;
+    top: 65vh;
+    left: 0vh;
+    right: 0vh;
+    padding-left: 12%;
+}
+#menu:hover{
+  color: blue;
+  
+}
+
+#menu button {
+    border: none;
+    border-radius: 20px;
+    width: 22vw;
+    height: 5vw;
+    margin-right: 5vw;
+    margin-bottom: 2.5vw;
+    background-color: #F0FFFF;
+    font-size: 1.6vw;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #2980B9;
+    animation-name: bounceInUp;
+    animation-duration: 2.5s;
+}
+
+/* Header */
+#header {
+    position: absolute;
+    top: 20vh;
+    left: 0vh;
+    right: 0vh;
+    text-align: center;
+    color: white;
+    font-family: arial;
+    animation-duration: 2.5s;
+    animation-fill-mode: both;
+    animation-name: bounceInUp;
+
+}
+
+#header h1 {
+    font-size: 6vw;
+    line-height: 0.5;
+    font-weight: bold;
+  
+}
+#header h2 {
+    font-size: 3vw;
+   font-weight: normal;
+}
+
+/*icon*/
+
+#icon {
+    position: absolute;
+    top: 30px;
+    left: 3vw;
+    width:5vw; 
+    height:5vw;
+    animation-name: fadeInDown;
+    animation-duration: offset;
+
+}
+#officon {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 9vw;
+    height: 9vw;
+    opacity: 0; 
+}
+
+#play-icon {
+    position: absolute;
+    top: 30px;
+    left: 90vw;
+    width: 5vw;
+    height: 5vw;
+    animation-name: fadeInDown;
+    animation-duration: offset;
+}

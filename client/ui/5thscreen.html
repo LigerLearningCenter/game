@@ -1,0 +1,63 @@
+<html>
+
+    <head>
+        <title>5thscreen</title>
+        <link rel="stylesheet" type="text/css" href="../css/main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    </head>
+    <body>
+        <div id="background">
+            <div id="stripe1" class="stripe"></div>
+            <div id="stripe2" class="stripe"></div>
+            <div id="stripe3" class="stripe"></div>
+            <div id="stripe4" class="stripe"></div>
+            <div id="stripe5" class="stripe"></div>
+            <div id="stripe6" class="stripe"></div>
+            <div id="stripe7" class="stripe"></div>
+        </div>
+        <div id="menu">
+            <button>resume</button>
+            <button>save</button>
+            <button>load</button>
+            <button>quit</button>
+            <button>about liger</button>
+            <button>about cambodia</button>
+        </div>
+        
+        <div id="header">
+            <h1>Future Lab</h1><h2>Build a great country for the<br />
+            100th independence anniversary!</h2>
+        </div>
+        
+        <img id="icon" src="../icon/auto-defult-small.png" data-selected="false" class= "animated iconAnimate">
+        <!-- <img id="officon" src="../icon/auto-muted-white.png"> -->
+        <img id="play-icon" src="../icon/auto-play-white-small.png" data-selected="false" class= "animated play-icon">
+        <!-- <img id="pause" src="../icon/pause-white.png"> -->
+        <script type="text/javascript">
+            $("#icon").click(function() {
+                console.log("click");
+                if ($(this).attr("data-selected") == "false") {
+                    $(this).attr("src", "../icon/auto-muted-white-small.png");
+                    $(this).attr("data-selected", "true");                  
+                } else {
+                    $(this).attr("src", "../icon/auto-defult-small.png");
+                    $(this).attr("data-selected", "false");                                     
+                }
+            });
+            $("#play-icon").click(function() {
+                console.log("click");
+                if ($(this).attr("data-selected") == "false") {
+                    $(this).attr("src", "../icon/pause-white-small.png");
+                    $(this).attr("data-selected", "true");                  
+                } else {
+                    $(this).attr("src", "../icon/auto-play-white-small.png");
+                    $(this).attr("data-selected", "false");                                     
+                }
+            });
+
+
+        </script>
+
+    </body>
+    
+</html>

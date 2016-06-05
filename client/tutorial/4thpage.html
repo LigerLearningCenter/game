@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fourth Page</title>
+</head>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/vendor/animate.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto:700" rel="stylesheet" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<body>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#next").bind("click", function() {
+      $(".page-4").addClass("animated fadeIn")
+    });
+  });
+</script>
+
+<h1 class="money">$ 8,782,087,003</h1>
+
+<img id="pause" src="img/ICONS/navagation/pause.png" data-selected="false">
+<!-- <img id="pause"scr="img/ICONS/navagation/play-white.ng-->
+
+<script type="text/javascript">
+  
+      $("#pause").click(function() {
+        console.log("click");
+        if ($(this).attr("data-selected") == "false") {
+          $(this).attr("src", "img/ICONS/navagation/auto-play-white-small.png");
+          $(this).attr("data-selected", "true");          
+        } else {
+          $(this).attr("src", "img/ICONS/navagation/pause-white-small.png");
+          $(this).attr("data-selected", "false");                   
+        }
+      });
+
+</script>
+
+<div id="allArrow" class="page-4">
+	<img src="img/ICONS/navagation/down-arrow.png" id="arrow1" class="down">
+	<img src="img/ICONS/navagation/down-arrow.png" id="arrow2" class="down">
+	<img src="img/ICONS/navagation/down-arrow.png" id="arrow3" class="down">
+	<img src="img/ICONS/navagation/down-arrow.png" id="arrow4" class="down">
+	<img src="img/ICONS/navagation/down-arrow.png" id="arrow5" class="down">
+</div>
+
+<!-- Heading -->
+<header>
+  <div class="menubar" hidden="true">
+    <img src="img/icons/sectors/industry.png" class="icon" id="img1">
+    <p class="label">INDUSTRY</p> 
+    <div id ="gradient1" class="gradient"></div>
+  </div>
+  <div class="menubar">
+    <img src="img/icons/sectors/agriculture.png" class="icon" id="img2">
+    <p class="label">AGRICULTURE</p>
+    <div id ="gradient2" class="gradient"></div>  
+  </div>
+  <div class="menubar">
+    <img src="img/icons/sectors/consumer-service.png" class="icon" id="img3">
+    <pre class="test"> CONSUMER
+        SERVICES</pre>
+    <div id ="gradient3" class="gradient"></div>
+  </div>
+  <div class="menubar">
+    <img src="img/icons/sectors/infrastructure.png" class="icon" id="img4">
+    <p class="label label1">INFRASTRUCTURE</p>  
+    <div id ="gradient4" class="gradient"></div>
+  </div>
+  <div class="menubar">
+    <img src="img/icons/sectors/education.png" class="icon" id="img5">
+    <p class="label">EDUCATION</p>  
+    <div id ="gradient5" class="gradient"></div>
+  </div>
+  <div class="menubar">
+    <img src="img/icons/sectors/tourism.png" class="icon" id="img6">
+    <p class="label">TOURISM</p>  
+    <div id ="gradient6" class="gradient"></div>
+  </div>
+  <div class="menubar extra">
+    <img src="img/icons/sectors/ecology.png" class="icon" id="img7">
+    <p class="label">ECOLOGY</p>  
+    <div id ="gradient7" class="gradient"></div>
+</header>
+
+</header>
+</body>
+</html>
+  <div class="container">
+  	<div class="content">
+  		<h1 id="heading">Put it in different businesses</h1>
+  	</div>
+  </div>

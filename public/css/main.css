@@ -1,0 +1,464 @@
+
+/*Overall Code*/
+.back-color{
+    width: 100vw;
+    height: 13.9vw;
+    position: absolute;
+    top: 0vh;
+    left: 0vw;
+    background-color:  #ccccff;
+}
+.horizontal-grid {
+  width: 100vw;
+  height: 100vh;
+  margin-bottom: 0px;
+  position: absolute;
+  left: 0vw;
+  bottom: 0vh;
+}
+
+.horizontal-grid {
+  z-index: -1;
+  background-size: 100% 68px ;
+  background-image: linear-gradient(to bottom, black 0%, transparent 1%, transparent 100%)
+}
+
+.dropingMoney{
+    width: 100vw;
+    height: 60vh;
+    background-color: transparent;
+    z-index: -1;
+    position: absolute;
+    bottom: 0vw;
+    left: 0vh;
+    border-color: black;
+}
+html {
+    cursor: url("cursor.png"), auto;
+}
+* {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
+}
+body {
+    background-color: #eaedf2;
+    color: #4c498b;
+    font-family: 'roboto';
+}
+.money {
+    position: absolute;
+    left: -30px;
+    top: 1.4vw;
+    border-radius: 90px;
+    background: white;
+    padding-left: 60px;
+    padding-right: 40px;
+    padding-top: 2.5px;
+    padding-bottom: 2.5px;
+    font-size: 3.2vw;
+    font-family: 'roboto';
+    animation-name: zoomIn;
+    animation-duration: 2.5s;
+}
+#pause {
+    width: 5vw;
+    height: 5vw;
+    position: absolute;
+    top: 30px;
+    right: 2%;
+}
+
+.container.content#heading {
+    position: absolute;
+    left: 27%;
+    top: 35%;
+    font-size: 36pt;
+    font-family: 'roboto';
+}
+.down {
+    width: 2.5%;
+    height: 5.5%;
+    opacity: 10%;
+    animation-name: fadeIn;
+    animation-duration: 2s;
+}
+
+/*Page 4*/
+#arrow1 {
+    position: absolute;
+    top: 580px;
+    left: 50px;
+    animation-name: bounce;
+    animation-iteration-count: infinite;
+}
+#arrow2 {
+    position: absolute;
+    top: 580px;
+    left: 270px;
+    animation-name: bounce;
+    animation-iteration-count: infinite;
+}
+#arrow3 {
+    position: absolute;
+    top: 580px;
+    right: 50px;
+    animation-name: bounce;
+    animation-iteration-count: infinite;
+}
+#arrow4 {
+    position: absolute;
+    top: 580px;
+    right: 500px;
+    animation-name: bounce;
+    animation-iteration-count: infinite;
+}
+#arrow5 {
+    position: absolute;
+    top: 580px;
+    right: 270px;
+    animation-name: bounce;
+    animation-iteration-count: infinite;
+}
+#arrow-up{
+    width: 2.5%;
+    height: 5.5%;
+    position: absolute;
+    left: 470px;
+    top: 228px;
+    animation-name: bounce;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+/*Menu Bars*/
+header {
+    margin: 100px auto;
+    width: 14.25%;
+    height: 80px;
+    display: inline;
+}
+.icon {
+    width: 23.5%;
+    height: 55%;
+    vertical-align: middle;
+    position: relative;
+    top: 14px;
+    left: 3px;
+}
+.label {
+    font-size: 13pt;
+    position: relative;
+    top: -42%;
+    margin-left: 60px;
+}
+.label1 {
+    text-indent: -25px;
+    left: 10px;
+    font-weight:
+}
+pre.test {
+    font-family: 'roboto';
+    font-size: 13pt;
+    position: relative;
+    tab:1;
+    top: -55%;
+    margin-left: 60px;
+}
+div.menubar {
+    position: relative;
+    top: 6.8vw;
+    background-color: white;
+    margin: .7px;
+    float: left;
+    height: 85px;
+    width: Calc(100%/7.051);
+    display: inline;
+}
+div.gradient {
+    display: block;
+    position: relative;
+    left: -1px;
+    top: -31px;
+    width: 190.5px;
+    height: 15px;
+}
+div#gradient1 {
+    background: linear-gradient(90deg, gray, white);
+}
+div#gradient2 {
+    background: linear-gradient(90deg, #E9DC68, white);
+}
+div#gradient3 {
+    background: linear-gradient(90deg, #E55C4C, white);
+    position: absolute;
+    top: 70.5px;
+}
+div#gradient4 {
+    background: linear-gradient(90deg, #A85EB6, white);
+}
+div#gradient5 {
+    background: linear-gradient(90deg, #634A81, white);
+}
+div#gradient6 {
+    background: linear-gradient(90deg, #3196DE, white);
+}
+div#gradient7 {
+    background: linear-gradient(90deg, #50EFBB, white);
+}
+
+
+
+/*First Page*/
+h1#heading {
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    margin-top: 10px;
+    line-height: 1.1;
+    font-weight: 500;
+    font-size: 3.75vw;
+    color: #4c498b;
+    animation-name: fadeIn;
+    animation-duration: 2s;
+}
+.content {
+    padding: 0 20px;
+    position: relative;
+    top: 120px;
+    text-align: center;
+}
+.h1, .h2, .h3, h1, h2, h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.container {
+    text-align: center;
+}
+img#arrow-down {
+    width: 4vw;
+    height: 4vw;
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: 25vw;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    animation-name: bounce;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+button#click-here {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.1;
+    font-weight: 700;
+    color: #4c498b;
+    font-size: 4vw;
+    animation-name: fadeIn;
+    animation-duration: 2.5s;
+}
+
+/*3rd page code*/
+.moneyBars {
+    width: 24%;
+    height: 10%;
+    background-color: white;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    position: fixed;
+    top: 9.5%;
+    left: 0%;
+    animation-name: zoomIn;
+    animation-duration: 2.5s;
+}
+
+#tutorialOfPage3 {
+    position: absolute;
+    top: 35%;
+    left: 37%;
+    font-size: 36pt;
+    font-family: "Roboto";
+    color: #4C478C;
+    font-weight: bold;
+}
+#dollarIcon {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: -10px;
+    left: 2px;
+}
+#savingMoney {
+    width: 55px;
+    height: 45px;
+    position: absolute;
+    top: 63%;
+    left: 45%;
+}
+
+/*6th Page Code*/
+#topBarsDateCollection {
+    width: 100%;
+    height: 2.399999999vw;
+    background-color: #5c5c8a;
+    position: absolute;
+    top: 0vw;
+    left: 0vw;
+}
+#dateCollection {
+    width: 13%;
+    height: 100%;
+    background-color: white;
+    position: absolute;
+    top: 0px;
+    left: 11%;
+}
+#leftArrow {
+    width: 0;
+    height: 0;
+    border-top: 16.9px solid transparent;
+    border-bottom: 16.9px solid transparent;
+    border-right: 16.9px solid white;
+    position: absolute;
+    top: 0px;
+    left: 9.779%;
+}
+#rightArrow {
+    width: 0;
+    height: 0;
+    border-top: 16.9px solid transparent;
+    border-bottom: 16.9px solid transparent;
+    border-left: 16.9px solid white;
+    position: absolute;
+    top: 0px;
+    left: 24.022345%;
+}
+#dashBorder {
+    width: 100%;
+    border: green;
+    border: dashed 4px #000;
+    border-width: 1px;
+    border-color: white;
+    position: absolute;
+    top: 48%;
+    left: -0.3%;
+
+}
+#timeZone {
+    font-family: 'Roboto';
+    font-size: 18pt;
+    position: absolute;
+    top: -25px;
+    left: 27px;
+}
+#socailmoodHappy1 {
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: 2.8vw;
+    right: 34%;
+}
+#socailmoodHappy2 {
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: 2.8vw;
+    right: 29%;
+}
+#socailmoodHappy3 {
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: 2.8vw;
+    right: 24%;
+}
+#socailmoodHappy4 {
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: 2.8vw;
+    right: 19%;
+}
+#socailmoodHappy5{
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: 2.8vw;
+    right: 14%;
+}
+#socailmoodSad1 {
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: 2.8vw;
+    right: 34%;
+}
+#socailmoodSad2 {
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: 2.8vw;
+    right: 29%;
+}
+#socailmoodSad3 {
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: 2.8vw;
+    right: 24%;
+}
+#socailmoodSad4 {
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: 2.8vw;
+    right: 19%;
+}
+#socailmoodSad5{
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: 2.8vw;
+    right: 14%;
+}
+#commentOnPage6 {
+    position: absolute;
+    top: 35%;
+    left: 15%;
+    font-size: 36px;
+    font-family: "Roboto";
+    color: #4C478C;
+    font-weight: bold;
+}
+
+/*Page 7*/
+
+#text {
+    font-family: 'roboto';
+    font-size: 14pt;
+    position: absolute;
+    top: 33%;
+    left: 25%;
+    font-weight: normal;
+}
+#arrow{
+    position: absolute;
+    left: 475px;
+    top: 515px;
+    animation-name: bounce;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+h1.show-all{
+    position: absolute;
+    top: 48px;
+}

@@ -2,7 +2,7 @@ $(document).ready(function() {
     $(".menubar").hide();
 
     //Will view Second
-    $("#click-here").bind("click", function(event) {
+    $("#arrow-down-hidden-box").bind("click", function(event) {
         $("#page-2").show();
         $(".page-1").hide();
         $(".money").show();

@@ -241,20 +241,35 @@ img#arrow-down {
     height: 4vw;
     overflow: auto;
     margin: auto;
-    position: absolute;
-    top: 25vw;
+    position: relative;
+    display: block;
+    top: 5vh;
     left: 0;
-    bottom: 0;
+    bottom: 5vh;
     right: 0;
     animation-name: bounce;
     animation-duration: 2s;
     animation-iteration-count: infinite;
 }
-button#click-here {
+
+div#arrow-down-hidden-box{
+    width: 25vw;
+    height: 30vw;
+    overflow: auto;
+    margin: auto;
+    position: relative;
+    display: block;
+    top: 5vh;
+    left: 0;
+    bottom: 5vh;
+    right: 0;
+}
+
+h1#click-here {
     background-color: Transparent;
     background-repeat: no-repeat;
     border: none;
-    cursor: pointer;
+    cursor: inherit;
     overflow: hidden;
     outline: none;
     text-transform: uppercase;

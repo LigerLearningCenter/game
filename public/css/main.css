@@ -174,7 +174,7 @@ div.menubar {
     margin: .7px;
     float: left;
     height: 85px;
-    width: Calc(100%/7.051);
+    width: calc(100% / 8);
     display: inline;
 }
 div.gradient {

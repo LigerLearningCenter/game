@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+    <!-- Head -->
+    <head>
+        <title>Economy.rocks</title>
+        <meta charset="UTF-8">
+
+        <link rel="stylesheet" type="text/css" href="css/animate.css">
+        <link rel="stylesheet" type="text/css" href="css/main-game.css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
+        
+        <script src="js/jquery-2.2.0.min.js"></script>
+        <script src="js/moment.min.js"></script>
+        <meta name="viewport" content="user-scalable=no" />
+        
+        <script type="text/javascript" src="lib/data_files/event.js"></script>
+        <script type="text/javascript" src="lib/data_files/agriculture.js"></script>
+        <script type="text/javascript" src="lib/data_files/consumer-services.js"></script>
+        <script type="text/javascript" src="lib/data_files/ecology.js"></script>
+        <script type="text/javascript" src="lib/data_files/education.js"></script>
+        <script type="text/javascript" src="lib/data_files/industry.js"></script>
+        <script type="text/javascript" src="lib/data_files/infrastructure.js"></script>
+        <script type="text/javascript" src="lib/data_files/tourism.js"></script>
+
+        <script type="text/javascript" src="lib/const.js"></script>
+        <script type="text/javascript" src="lib/gamestate.js"></script>
+        <script type="text/javascript" src="lib/milestone.js"></script>
+        <script type="text/javascript" src="lib/sector.js"></script>
+        <script type="text/javascript" src="lib/main.js"></script>
+        
+    </head>
+    <body>
+    <style type="text/css">
+        body {
+            min-width: 480px;
+        }
+    </style>
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                var tutorial = 0;
+                var isTutorialEnabled = window.location.search == "?tutorial=1";
+
+                function invest(sectorName, investment) {
+                    if (!gs.isGameOver) {
+                        gs.invest(sectorName, investment);
+                    }
+                }
+
+                var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+                function hideTutorial() {
+                    $("#overlay > h1").html("Now you're ready to start")
+                    $("#overlay button").html("Start Game")
+
+                    $("#tutorial").hide();
+                    $("#overlay").show();
+                }
+
+                var eventType = iOS ? 'touchstart' : 'click';
+                $(".sector").bind(eventType, function(evt) {
+                    evt.preventDefault();
+                    evt.stopImmediatePropagation();                    
+
+                    var sectorName = $(this).data("sector-name");
+
+                    if (!isTutorialEnabled) {
+                        invest(sectorName, 50);
+                    } else {
+                        switch (tutorial) {
+                        case 0:
+                            if ($(this).data("sector") == 3) {
+                                $("#header").css("opacity", 1);
+                                $("#tutorial h1").html("This is your money");
+                                $("#tutorial h2").html("");
+                                tutorial++;
+                                invest(sectorName, 100);
+                                $("#tutorial h1").html("Put money in different businesses");
+                                $("#tutorial h2").html("Over time it can turn into profit and make your citizens happy");
+                                $(".sector-header, #header, #timeline").css("opacity", 0.2);
+                                $(".arrow").css("opacity", 1.0);
+                                $(".sector[data-sector='3'] > .sector-money > .arrow").css("opacity", 0);
+                            }
+                            break;
+                        case 1:
+                            var sectorId = $(this).data("sector");
+                            var sectorName = $(this).data("sector-name");
+
+                            if (gs.sectors[sectorName].investment == 0) {
+                                $(".sector[data-sector='" + sectorId + "'] > .sector-money > .arrow").css("opacity", 0);
+                                invest(sectorName, 50);
+                            }
+                            if (gs.investedInAllSectors) {
+                                $("#tutorial h1").html("");
+                                $("#tutorial h2").html("");                                
+                                $(".arrow").css("opacity", 0);
+                                tutorial++;
+                                $("#tutorial h1").html("Now, let's put a lot of money into one business");
+                                $("#tutorial h2").html("");
+                                $(".sector[data-sector='2'] > .sector-money > .arrow").css("opacity", 1);
+                            }
+                            break;
+                        case 2:
+                            if ($(this).data("sector") == 2) {
+                                invest(sectorName, 50);
+                                if (gs.sectors["consumerServices"].investment >= 500) {
+                                    $("#tutorial h1").html("This is your first milestone!");
+                                    $("#tutorial h2").html("Milestones help you grow faster and influence other businesses");
+                                    $(".arrow").css("opacity", 0);
+                                    tutorial++;
+                                }
+                            }
+                            break;
+                        case 3:
+                            window.setTimeout(hideTutorial, 3000);
+                            break;
+                        default:
+                            invest(sectorName, 50);
+                            break;
+                    }
+                }
+                    
+                });
+
+                if (isTutorialEnabled) {
+                    $(".sector-header, #header, #timeline, .arrow").css("opacity", 0.2);
+                    $(".sector[data-sector='3'] > .sector-money > .arrow").css("opacity", 1);                
+                } else {
+                    $("#tutorial").css("display", "none");
+                    $(".arrow").css("opacity", 0);
+                    loop();
+                    updateTime();
+                }
+
+            });
+        </script>
+        <div id="container">
+            <div id="main-container">
+                <div id="timeline" style="pointer-events: no;">
+                    <div id="timestamp"></div>
+                </div>
+                <div id="header" style="pointer-events: no;">
+                    <div id="balance" class="money">$1.000.000</div>
+                    <div id="event" ></div>
+                    <div id="social-mood">
+                        <img id="social-mood-1" src="img/socialmood-happy.png" />
+                        <img id="social-mood-2" src="img/socialmood-happy.png" />
+                        <img id="social-mood-3" src="img/socialmood-happy.png" />
+                        <img id="social-mood-4" src="img/socialmood-happy.png" />
+                        <img id="social-mood-5" src="img/socialmood-happy.png" />
+                    </div>
+                </div>
+                <div id="board">
+                    <div class="sector" data-sector="0" data-sector-name="industry">
+                        <div class="sector-header">
+                            <div class="sector-inside-container">
+                                <img src="img/sectors/industry.png" />
+                                <p>industry</p>
+                            </div>
+                            <div class="sector-gradient"></div>
+                        </div>
+                        <svg class="sector-money">
+                            <rect y="100%" width="100%" height="100%" fill="#474747" />
+                            <line x1="0" y1="10%" x2="100%" y2="10%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="20%" x2="100%" y2="20%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="30%" x2="100%" y2="30%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="40%" x2="100%" y2="40%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="50%" x2="100%" y2="50%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="60%" x2="100%" y2="60%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="70%" x2="100%" y2="70%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="80%" x2="100%" y2="80%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="90%" x2="100%" y2="90%" style="stroke:#efefef;stroke-width:1;" />
+                            <image width="123" height="32" x="50%" y="95%" transform="translate(-62, -16)" xlink:href="img/milestones/industry-1.png"  />
+                            <image width="123" height="32" x="50%" y="85%" transform="translate(-62, -16)" xlink:href="img/milestones/industry-2.png"  />
+                            <image width="123" height="32" x="50%" y="75%" transform="translate(-62, -16)" xlink:href="img/milestones/industry-3.png"  />
+                            <image width="123" height="32" x="50%" y="65%" transform="translate(-62, -16)" xlink:href="img/milestones/industry-4.png"  />
+                            <image width="123" height="32" x="50%" y="55%" transform="translate(-62, -16)" xlink:href="img/milestones/industry-5.png"  />
+                            <image width="123" height="32" x="50%" y="45%" transform="translate(-62, -16)" xlink:href="img/milestones/industry-6.png"  />
+                            <image width="123" height="32" x="50%" y="35%" transform="translate(-62, -16)" xlink:href="img/milestones/industry-7.png"  />
+                            <image width="123" height="32" x="50%" y="25%" transform="translate(-62, -16)" xlink:href="img/milestones/industry-8.png"  />
+                            <image width="123" height="32" x="50%" y="15%" transform="translate(-62, -16)" xlink:href="img/milestones/industry-9.png"  />
+                            <image width="123" height="32" x="50%" y="5%" transform="translate(-62, -16)" xlink:href="img/milestones/industry-10.png"  />
+                            <image class="arrow" width="48" height="48" x="50%" y="80%" transform="translate(-24, -24)" xlink:href="img/arrows/down.png"  />
+                          </svg>
+                    </div>
+                    <div class="sector" data-sector="1" data-sector-name="agriculture">
+                        <div class="sector-header">
+                            <div class="sector-inside-container">
+                                <img src="img/sectors/agriculture.png" />
+                                <p>agriculture</p>
+                            </div>
+                            <div class="sector-gradient"></div>
+                        </div>
+                        <svg class="sector-money">
+                            <rect y="100%" width="100%" height="100%" fill="#E9DC68" />
+                            <line x1="0" y1="10%" x2="100%" y2="10%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="20%" x2="100%" y2="20%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="30%" x2="100%" y2="30%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="40%" x2="100%" y2="40%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="50%" x2="100%" y2="50%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="60%" x2="100%" y2="60%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="70%" x2="100%" y2="70%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="80%" x2="100%" y2="80%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="90%" x2="100%" y2="90%" style="stroke:#efefef;stroke-width:1;" />
+                            <image width="123" height="32" x="50%" y="95%" transform="translate(-62, -16)" xlink:href="img/milestones/agriculture-1.png"  />
+                            <image width="123" height="32" x="50%" y="85%" transform="translate(-62, -16)" xlink:href="img/milestones/agriculture-2.png"  />
+                            <image width="123" height="32" x="50%" y="75%" transform="translate(-62, -16)" xlink:href="img/milestones/agriculture-3.png"  />
+                            <image width="123" height="32" x="50%" y="65%" transform="translate(-62, -16)" xlink:href="img/milestones/agriculture-4.png"  />
+                            <image width="123" height="32" x="50%" y="55%" transform="translate(-62, -16)" xlink:href="img/milestones/agriculture-5.png"  />
+                            <image width="123" height="32" x="50%" y="45%" transform="translate(-62, -16)" xlink:href="img/milestones/agriculture-6.png"  />
+                            <image width="123" height="32" x="50%" y="35%" transform="translate(-62, -16)" xlink:href="img/milestones/agriculture-7.png"  />
+                            <image width="123" height="32" x="50%" y="25%" transform="translate(-62, -16)" xlink:href="img/milestones/agriculture-8.png"  />
+                            <image width="123" height="32" x="50%" y="15%" transform="translate(-62, -16)" xlink:href="img/milestones/agriculture-9.png"  />
+                            <image width="123" height="32" x="50%" y="5%"  transform="translate(-62, -16)" xlink:href="img/milestones/agriculture-10.png"  />
+                            <image class="arrow" width="48" height="48" x="50%" y="80%" transform="translate(-24, -24)" xlink:href="img/arrows/down.png"  />
+                        </svg>
+                    </div>
+                    <div class="sector" data-sector="2" data-sector-name="consumerServices">
+                        <div class="sector-header">
+                            <div class="sector-inside-container">
+                                <img src="img/sectors/consumerServices.png" />
+                                <p>consumer services</p>
+                            </div>
+                            <div class="sector-gradient"></div>
+                        </div>
+                        <svg class="sector-money">
+                            <rect y="100%" width="100%" height="100%" fill="#E55C4C" />
+                            <line x1="0" y1="10%" x2="100%" y2="10%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="20%" x2="100%" y2="20%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="30%" x2="100%" y2="30%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="40%" x2="100%" y2="40%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="50%" x2="100%" y2="50%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="60%" x2="100%" y2="60%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="70%" x2="100%" y2="70%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="80%" x2="100%" y2="80%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="90%" x2="100%" y2="90%" style="stroke:#efefef;stroke-width:1;" />
+                            <image width="123" height="32" x="50%" y="95%" transform="translate(-62, -16)" xlink:href="img/milestones/consumer-services-1.png"  />
+                            <image width="123" height="32" x="50%" y="85%" transform="translate(-62, -16)" xlink:href="img/milestones/consumer-services-2.png"  />
+                            <image width="123" height="32" x="50%" y="75%" transform="translate(-62, -16)" xlink:href="img/milestones/consumer-services-3.png"  />
+                            <image width="123" height="32" x="50%" y="65%" transform="translate(-62, -16)" xlink:href="img/milestones/consumer-services-4.png"  />
+                            <image width="123" height="32" x="50%" y="55%" transform="translate(-62, -16)" xlink:href="img/milestones/consumer-services-5.png"  />
+                            <image width="123" height="32" x="50%" y="45%" transform="translate(-62, -16)" xlink:href="img/milestones/consumer-services-6.png"  />
+                            <image width="123" height="32" x="50%" y="35%" transform="translate(-62, -16)" xlink:href="img/milestones/consumer-services-7.png"  />
+                            <image width="123" height="32" x="50%" y="25%" transform="translate(-62, -16)" xlink:href="img/milestones/consumer-services-8.png"  />
+                            <image width="123" height="32" x="50%" y="15%" transform="translate(-62, -16)" xlink:href="img/milestones/consumer-services-9.png"  />
+                            <image width="123" height="32" x="50%" y="5%"  transform="translate(-62, -16)" xlink:href="img/milestones/consumer-services-10.png"  />
+                            <image class="arrow" width="48" height="48" x="50%" y="80%" transform="translate(-24, -24)" xlink:href="img/arrows/down.png"  />
+                        </svg>
+                    </div>
+                    <div class="sector" data-sector="3" data-sector-name="infrastructure">
+                        <div class="sector-header">
+                            <div class="sector-inside-container">
+                                <img src="img/sectors/infrastructure.png" />
+                                <p>infrastructure</p>
+                            </div>
+                            <div class="sector-gradient"></div>
+                        </div>
+                        <svg class="sector-money">
+                            <rect y="100%" width="100%" height="100%" fill="#A85EB6" />
+                            <line x1="0" y1="10%" x2="100%" y2="10%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="20%" x2="100%" y2="20%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="30%" x2="100%" y2="30%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="40%" x2="100%" y2="40%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="50%" x2="100%" y2="50%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="60%" x2="100%" y2="60%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="70%" x2="100%" y2="70%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="80%" x2="100%" y2="80%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="90%" x2="100%" y2="90%" style="stroke:#efefef;stroke-width:1;" />
+                            <image width="123" height="32" x="50%" y="95%" transform="translate(-62, -16)" xlink:href="img/milestones/infrastructure-1.png"  />
+                            <image width="123" height="32" x="50%" y="85%" transform="translate(-62, -16)" xlink:href="img/milestones/infrastructure-2.png"  />
+                            <image width="123" height="32" x="50%" y="75%" transform="translate(-62, -16)" xlink:href="img/milestones/infrastructure-3.png"  />
+                            <image width="123" height="32" x="50%" y="65%" transform="translate(-62, -16)" xlink:href="img/milestones/infrastructure-4.png"  />
+                            <image width="123" height="32" x="50%" y="55%" transform="translate(-62, -16)" xlink:href="img/milestones/infrastructure-5.png"  />
+                            <image width="123" height="32" x="50%" y="45%" transform="translate(-62, -16)" xlink:href="img/milestones/infrastructure-6.png"  />
+                            <image width="123" height="32" x="50%" y="35%" transform="translate(-62, -16)" xlink:href="img/milestones/infrastructure-7.png"  />
+                            <image width="123" height="32" x="50%" y="25%" transform="translate(-62, -16)" xlink:href="img/milestones/infrastructure-8.png"  />
+                            <image width="123" height="32" x="50%" y="15%" transform="translate(-62, -16)" xlink:href="img/milestones/infrastructure-9.png"  />
+                            <image width="123" height="32" x="50%" y="5%"  transform="translate(-62, -16)" xlink:href="img/milestones/infrastructure-10.png"  />
+                            <image class="arrow" width="48" height="48" x="50%" y="80%" transform="translate(-24, -24)" xlink:href="img/arrows/down.png"  />
+                        </svg>
+                    </div>
+                    <div class="sector" data-sector="4" data-sector-name="education">
+                        <div class="sector-header">
+                            <div class="sector-inside-container">
+                                <img src="img/sectors/education.png" />
+                                <p>education</p>
+                            </div>
+                            <div class="sector-gradient"></div>
+                        </div>
+                        <svg class="sector-money">
+                            <rect y="100%" width="100%" height="100%" fill="#634A81" />
+                            <line x1="0" y1="10%" x2="100%" y2="10%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="20%" x2="100%" y2="20%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="30%" x2="100%" y2="30%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="40%" x2="100%" y2="40%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="50%" x2="100%" y2="50%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="60%" x2="100%" y2="60%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="70%" x2="100%" y2="70%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="80%" x2="100%" y2="80%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="90%" x2="100%" y2="90%" style="stroke:#efefef;stroke-width:1;" />
+                            <image width="123" height="32" x="50%" y="95%" transform="translate(-62, -16)" xlink:href="img/milestones/education-1.png"  />
+                            <image width="123" height="32" x="50%" y="85%" transform="translate(-62, -16)" xlink:href="img/milestones/education-2.png"  />
+                            <image width="123" height="32" x="50%" y="75%" transform="translate(-62, -16)" xlink:href="img/milestones/education-3.png"  />
+                            <image width="123" height="32" x="50%" y="65%" transform="translate(-62, -16)" xlink:href="img/milestones/education-4.png"  />
+                            <image width="123" height="32" x="50%" y="55%" transform="translate(-62, -16)" xlink:href="img/milestones/education-5.png"  />
+                            <image width="123" height="32" x="50%" y="45%" transform="translate(-62, -16)" xlink:href="img/milestones/education-6.png"  />
+                            <image width="123" height="32" x="50%" y="35%" transform="translate(-62, -16)" xlink:href="img/milestones/education-7.png"  />
+                            <image width="123" height="32" x="50%" y="25%" transform="translate(-62, -16)" xlink:href="img/milestones/education-8.png"  />
+                            <image width="123" height="32" x="50%" y="15%" transform="translate(-62, -16)" xlink:href="img/milestones/education-9.png"  />
+                            <image width="123" height="32" x="50%" y="5%"  transform="translate(-62, -16)" xlink:href="img/milestones/education-10.png"  />
+                            <image class="arrow" width="48" height="48" x="50%" y="80%" transform="translate(-24, -24)" xlink:href="img/arrows/down.png"  />
+                        </svg>
+                    </div>
+                    <div class="sector" data-sector="5" data-sector-name="tourism">
+                        <div class="sector-header">
+                            <div class="sector-inside-container">
+                                <img src="img/sectors/tourism.png" />
+                                <p>tourism</p>
+                            </div>
+                            <div class="sector-gradient"></div>
+                        </div>
+                        <svg class="sector-money">
+                            <rect y="100%" width="100%" height="100%" fill="#3196DE" />
+                            <line x1="0" y1="10%" x2="100%" y2="10%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="20%" x2="100%" y2="20%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="30%" x2="100%" y2="30%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="40%" x2="100%" y2="40%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="50%" x2="100%" y2="50%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="60%" x2="100%" y2="60%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="70%" x2="100%" y2="70%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="80%" x2="100%" y2="80%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="90%" x2="100%" y2="90%" style="stroke:#efefef;stroke-width:1;" />
+                            <image width="123" height="32" x="50%" y="95%" transform="translate(-62, -16)" xlink:href="img/milestones/tourism-1.png"  />
+                            <image width="123" height="32" x="50%" y="85%" transform="translate(-62, -16)" xlink:href="img/milestones/tourism-2.png"  />
+                            <image width="123" height="32" x="50%" y="75%" transform="translate(-62, -16)" xlink:href="img/milestones/tourism-3.png"  />
+                            <image width="123" height="32" x="50%" y="65%" transform="translate(-62, -16)" xlink:href="img/milestones/tourism-4.png"  />
+                            <image width="123" height="32" x="50%" y="55%" transform="translate(-62, -16)" xlink:href="img/milestones/tourism-5.png"  />
+                            <image width="123" height="32" x="50%" y="45%" transform="translate(-62, -16)" xlink:href="img/milestones/tourism-6.png"  />
+                            <image width="123" height="32" x="50%" y="35%" transform="translate(-62, -16)" xlink:href="img/milestones/tourism-7.png"  />
+                            <image width="123" height="32" x="50%" y="25%" transform="translate(-62, -16)" xlink:href="img/milestones/tourism-8.png"  />
+                            <image width="123" height="32" x="50%" y="15%" transform="translate(-62, -16)" xlink:href="img/milestones/tourism-9.png"  />
+                            <image width="123" height="32" x="50%" y="5%"  transform="translate(-62, -16)" xlink:href="img/milestones/tourism-10.png"  />
+                            <image class="arrow" width="48" height="48" x="50%" y="80%" transform="translate(-24, -24)" xlink:href="img/arrows/down.png"  />
+                        </svg>
+                    </div>
+                    <div class="sector" data-sector="6" data-sector-name="ecology">
+                        <div class="sector-header">
+                            <div class="sector-inside-container">
+                                <img src="img/sectors/ecology.png" />
+                                <p>ecology</p>
+                            </div>
+                            <div class="sector-gradient"></div>
+                        </div>
+                        <svg class="sector-money">
+                            <rect y="100%" width="100%" height="100%" fill="#50EFBB" />
+                            <line x1="0" y1="10%" x2="100%" y2="10%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="20%" x2="100%" y2="20%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="30%" x2="100%" y2="30%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="40%" x2="100%" y2="40%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="50%" x2="100%" y2="50%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="60%" x2="100%" y2="60%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="70%" x2="100%" y2="70%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="80%" x2="100%" y2="80%" style="stroke:#efefef;stroke-width:1;" />
+                            <line x1="0" y1="90%" x2="100%" y2="90%" style="stroke:#efefef;stroke-width:1;" />
+                            <image width="123" height="32" x="50%" y="95%" transform="translate(-62, -16)" xlink:href="img/milestones/ecology-1.png"  />
+                            <image width="123" height="32" x="50%" y="85%" transform="translate(-62, -16)" xlink:href="img/milestones/ecology-2.png"  />
+                            <image width="123" height="32" x="50%" y="75%" transform="translate(-62, -16)" xlink:href="img/milestones/ecology-3.png"  />
+                            <image width="123" height="32" x="50%" y="65%" transform="translate(-62, -16)" xlink:href="img/milestones/ecology-4.png"  />
+                            <image width="123" height="32" x="50%" y="55%" transform="translate(-62, -16)" xlink:href="img/milestones/ecology-5.png"  />
+                            <image width="123" height="32" x="50%" y="45%" transform="translate(-62, -16)" xlink:href="img/milestones/ecology-6.png"  />
+                            <image width="123" height="32" x="50%" y="35%" transform="translate(-62, -16)" xlink:href="img/milestones/ecology-7.png"  />
+                            <image width="123" height="32" x="50%" y="25%" transform="translate(-62, -16)" xlink:href="img/milestones/ecology-8.png"  />
+                            <image width="123" height="32" x="50%" y="15%" transform="translate(-62, -16)" xlink:href="img/milestones/ecology-9.png"  />
+                            <image width="123" height="32" x="50%" y="5%"  transform="translate(-62, -16)" xlink:href="img/milestones/ecology-10.png"  />
+                            <image class="arrow" width="48" height="48" x="50%" y="80%" transform="translate(-24, -24)" xlink:href="img/arrows/down.png"  />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div id="tutorial">
+                <h1>Build a great country for the <br/>100th independence anniversary!</h1>
+                <h2 style="margin-top: 20px;">Click here</h2>
+                <a href="http://economy.rocks/game.html" style="display: none;"><button>Start game</button></a>
+            </div>
+            <div id="overlay" style="display: none;">
+                <h1>Game Over</h1>
+                <a href="http://economy.rocks/game.html"><button>Restart</button></a>
+            </div>
+        </div>
+    </body>
+</html>

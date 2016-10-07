@@ -123,7 +123,7 @@ from {
 #menu button {
     border: none;
     border-radius: 20px;
-    width: 22vw;
+    width: 30vw;
     height: 5vw;
     margin-right: 5vw;
     margin-bottom: 2.5vw;
@@ -134,6 +134,10 @@ from {
     color: #2980B9;
     animation-name: bounceInUp;
     animation-duration: 2.5s;
+}
+
+#menu button:disabled {
+    opacity: 0.25;
 }
 
 /* Header */
